@@ -2,18 +2,11 @@ package com.example.dddinpractice;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import junitparams.naming.TestCaseName;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 
 @SpringBootTest
@@ -28,12 +21,12 @@ public class MoneyTest {
 
         Money sum = Money.Sum(money1, money2);
 
-        Assertions.assertEquals(sum.OneCentCount, 2);
-        Assertions.assertEquals(sum.TenCentCount, 4);
-        Assertions.assertEquals(sum.QuarterCount, 6);
-        Assertions.assertEquals(sum.OneDollarCount, 8);
-        Assertions.assertEquals(sum.FiveDollarCount, 10);
-        Assertions.assertEquals(sum.TwentyDollarCount, 12);
+        Assertions.assertEquals(sum.oneCentCount, 2);
+        Assertions.assertEquals(sum.tenCentCount, 4);
+        Assertions.assertEquals(sum.quarterCount, 6);
+        Assertions.assertEquals(sum.oneDollarCount, 8);
+        Assertions.assertEquals(sum.fiveDollarCount, 10);
+        Assertions.assertEquals(sum.twentyDollarCount, 12);
 
     }
 
@@ -60,7 +53,7 @@ public class MoneyTest {
     }
 
 
-    @ParameterizedTest
+    @Test
     @Parameters({
             "-1, 0, 0, 0, 0, 0",
             "0, -1, 0, 0, 0, 0",
@@ -119,12 +112,12 @@ public class MoneyTest {
 
         Money result = Money.Subtract(money1, money2);
 
-        Assertions.assertEquals(result.OneCentCount, 9);
-        Assertions.assertEquals(result.TenCentCount, 8);
-        Assertions.assertEquals(result.QuarterCount, 7);
-        Assertions.assertEquals(result.OneDollarCount, 6);
-        Assertions.assertEquals(result.FiveDollarCount, 5);
-        Assertions.assertEquals(result.TwentyDollarCount, 4);
+        Assertions.assertEquals(result.oneCentCount, 9);
+        Assertions.assertEquals(result.tenCentCount, 8);
+        Assertions.assertEquals(result.quarterCount, 7);
+        Assertions.assertEquals(result.oneDollarCount, 6);
+        Assertions.assertEquals(result.fiveDollarCount, 5);
+        Assertions.assertEquals(result.twentyDollarCount, 4);
 
 
     }
@@ -139,6 +132,28 @@ public class MoneyTest {
                 () -> {
                     Money.Subtract(money1, money2);
                 });
+    }
+
+    @Test
+    @Parameters({
+            "1, 0, 0, 0, 0, 0, ¢1.0",
+            "0, 1, 0, 0, 0, 0, ¢10.0",
+            "1, 0, 0, 1, 0, 0, $1.01",
+            "0, 0, 2, 1, 0, 0, $1.5"})
+    public void ToStringShouldReturnAmountOfMoney(
+            Integer oneCentCount,
+            Integer tenCentCount,
+            Integer quarterCount,
+            Integer oneDollarCount,
+            Integer fiveDollarCount,
+            Integer twentyDollarCount,
+            Double expectedString) {
+
+        Money money = new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount, twentyDollarCount);
+
+
+        Assertions.assertEquals(money.toString(), expectedString);
+
     }
 
 

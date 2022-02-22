@@ -1,7 +1,8 @@
 package com.example.dddinpractice;
 
 import javax.persistence.*;
-import javax.persistence.*;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,32 +10,40 @@ public class SnackMachine extends MyEntity {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "OneCentCount", column = @Column(name = "MoneyInside_OneCentCount")),
-            @AttributeOverride(name = "TenCentCount", column = @Column(name = "MoneyInside_TenCentCount")),
-            @AttributeOverride(name = "QuarterCount", column = @Column(name = "MoneyInside_QuarterCount")),
-            @AttributeOverride(name = "OneDollarCount", column = @Column(name = "MoneyInside_OneDollarCount")),
-            @AttributeOverride(name = "FiveDollarCount", column = @Column(name = "MoneyInside_FiveDollarCount")),
-            @AttributeOverride(name = "TwentyDollarCount", column = @Column(name = "MoneyInside_TwentyDollarCount"))
+            @AttributeOverride(name = "oneCentCount", column = @Column(name = "moneyInside_OneCentCount")),
+            @AttributeOverride(name = "tenCentCount", column = @Column(name = "moneyInside_TenCentCount")),
+            @AttributeOverride(name = "quarterCount", column = @Column(name = "moneyInside_QuarterCount")),
+            @AttributeOverride(name = "oneDollarCount", column = @Column(name = "moneyInside_OneDollarCount")),
+            @AttributeOverride(name = "fiveDollarCount", column = @Column(name = "moneyInside_FiveDollarCount")),
+            @AttributeOverride(name = "twentyDollarCount", column = @Column(name = "moneyInside_TwentyDollarCount"))
     })
-    public Money MoneyInside = Money.None;
+    private Money moneyInside = Money.None;
+    private Double moneyInTransaction = 0.0;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "OneCentCount", column = @Column(name = "MoneyInTransaction_OneCentCount")),
-            @AttributeOverride(name = "TenCentCount", column = @Column(name = "MoneyInTransaction_TenCentCount")),
-            @AttributeOverride(name = "QuarterCount", column = @Column(name = "MoneyInTransaction_QuarterCount")),
-            @AttributeOverride(name = "OneDollarCount", column = @Column(name = "MoneyInTransaction_OneDollarCount")),
-            @AttributeOverride(name = "FiveDollarCount", column = @Column(name = "MoneyInTransaction_FiveDollarCount")),
-            @AttributeOverride(name = "TwentyDollarCount", column = @Column(name = "MoneyInTransaction_TwentyDollarCount"))
-    })
-    public Money MoneyInTransaction = Money.None;
+    @OneToMany(mappedBy = "snackMachine", cascade = CascadeType.ALL)
+    private List<Slot> Slots = List.of(new Slot(this, 1), new Slot(this, 2), new Slot(this, 3), new Slot(this, 4));
+
 
     public Money getMoneyInside() {
-        return MoneyInside;
+        return moneyInside;
     }
 
-    public Money getMoneyInTransaction() {
-        return MoneyInTransaction;
+    public Double getMoneyInTransaction() {
+        return moneyInTransaction;
+    }
+
+    public List<Slot> getSlots() {
+        return Slots;
+    }
+
+    public SnackMachine() {
+//        moneyInside = ;
+//        moneyInTransaction = 0.0;
+//        Slots = new ArrayList<>();
+//        Slots.add();
+//        Slots.add(new Slot(this, 2));
+//        Slots.add(new Slot(this, 3));
+//        Slots.add(new Slot(this, 4));
     }
 
     public void InsertMoney(Money money) {
@@ -44,15 +53,50 @@ public class SnackMachine extends MyEntity {
         if (!coinsAndNotes.contains(money))
             throw new IllegalArgumentException();
 
-        MoneyInTransaction = Money.Sum(money, MoneyInTransaction);
+        moneyInTransaction += money.Amount();
+        moneyInside = Money.Sum(money, moneyInside);
     }
 
     public void ReturnMoney() {
-        MoneyInTransaction = Money.None;
+
+        Money moneyToReturn = moneyInside.Allocate(moneyInTransaction);
+        moneyInside = Money.Subtract(moneyInside, moneyToReturn);
+        moneyInTransaction = 0.0;
     }
 
-    public void BuySnack() {
-        MoneyInside = Money.Sum(MoneyInTransaction, MoneyInside);
-        MoneyInTransaction = Money.None;
+    public void BuySnack(Integer position) {
+        Slot slot = GetSlot(position);
+        if (slot.getSnackPie().price > moneyInTransaction)
+            throw new IllegalArgumentException();
+
+        slot.setSnackPie(slot.getSnackPie().SubtractOne());
+
+        Money change = moneyInside.Allocate(getMoneyInTransaction() - slot.getSnackPie().price);
+
+        if (change.Amount() < (getMoneyInTransaction() - slot.getSnackPie().price))
+            throw new InvalidParameterException();
+
+        moneyInside = Money.Subtract(moneyInside, change);
+        moneyInTransaction = 0.0;
+    }
+
+    public SnackPie GetSnackPie(Integer position) {
+        return GetSlot(position).getSnackPie();
+    }
+
+    public Slot GetSlot(Integer position) {
+        return Slots.stream()
+                .filter(x -> x.getPosition().equals(position))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void LoadSnack(Integer position, SnackPie snackPie) {
+        Slot slot = GetSlot(position);
+        slot.setSnackPie(snackPie);
+    }
+
+    public void LoadMoney(Money money) {
+        moneyInside = Money.Sum(money, moneyInside);
     }
 }

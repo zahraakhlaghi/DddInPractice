@@ -15,7 +15,7 @@ public class SnackMachineTest {
 
         snackMachine.ReturnMoney();
 
-        Assertions.assertEquals(snackMachine.MoneyInTransaction.Amount(), 0.0);
+        Assertions.assertEquals(snackMachine.getMoneyInTransaction(), 0.0);
     }
 
     @Test
@@ -26,7 +26,7 @@ public class SnackMachineTest {
         snackMachine.InsertMoney(Money.Cent);
         snackMachine.InsertMoney(Money.Dollar);
 
-        Assertions.assertEquals(snackMachine.MoneyInTransaction.Amount(), 1.01);
+        Assertions.assertEquals(snackMachine.getMoneyInTransaction(), 1.01);
     }
 
     @Test
@@ -42,16 +42,84 @@ public class SnackMachineTest {
     }
 
     @Test
-    public void MoneyInTransactionGoesToMoneyInsideAfterPurchase(){
+    public void BuySnackTradesInsertedMoneyForASnack() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.InsertMoney(Money.Dollar);
+        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 10, 1.0));
         snackMachine.InsertMoney(Money.Dollar);
 
-        snackMachine.BuySnack();
+        snackMachine.BuySnack(1);
 
-        Assertions.assertEquals(snackMachine.MoneyInTransaction, Money.None);
-        Assertions.assertEquals(snackMachine.MoneyInside.Amount(), 2.0);
+        Assertions.assertEquals(snackMachine.getMoneyInTransaction(), 0.0);
+        Assertions.assertEquals(snackMachine.getMoneyInside().Amount(), 1.0);
+        Assertions.assertEquals(snackMachine.GetSnackPie(1).quantity, 9);
     }
 
+    @Test
+    public void CannotMakePurchaseWhenThereIsNoSnacks() {
+
+        SnackMachine snackMachine = new SnackMachine();
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> {
+                    snackMachine.BuySnack(1);
+                });
+    }
+
+    @Test
+    public void CannotMakePurchaseIfNotEnoughMoneyInserted() {
+
+        SnackMachine snackMachine = new SnackMachine();
+        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 2.0));
+        snackMachine.InsertMoney(Money.Dollar);
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> {
+                    snackMachine.BuySnack(1);
+                });
+    }
+
+    @Test
+    public void SnackMachineReturnsMoneyWithHighestDenominationFirst() {
+
+        SnackMachine snackMachine = new SnackMachine();
+        snackMachine.LoadMoney(Money.Dollar);
+
+        snackMachine.InsertMoney(Money.Quarter);
+        snackMachine.InsertMoney(Money.Quarter);
+        snackMachine.InsertMoney(Money.Quarter);
+        snackMachine.InsertMoney(Money.Quarter);
+        snackMachine.ReturnMoney();
+
+
+        Assertions.assertEquals(snackMachine.getMoneyInside().quarterCount, 4);
+        Assertions.assertEquals(snackMachine.getMoneyInside().oneDollarCount, 0);
+    }
+
+    @Test
+    public void AfterPurchaseChangeIsReturned() {
+        SnackMachine snackMachine = new SnackMachine();
+        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 0.5));
+        snackMachine.LoadMoney(Money.Multiply(Money.TenCent, 10));
+
+        snackMachine.InsertMoney(Money.Dollar);
+        snackMachine.BuySnack(1);
+
+        Assertions.assertEquals(snackMachine.getMoneyInside().Amount(), 1.5);
+        Assertions.assertEquals(snackMachine.getMoneyInTransaction(), 0);
+
+    }
+
+    @Test
+    public void CannotBuySnackIfNotEnoughChange() {
+        SnackMachine snackMachine = new SnackMachine();
+        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 0.5));
+        snackMachine.InsertMoney(Money.Dollar);
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> {
+                    snackMachine.BuySnack(1);
+                });
+
+    }
 
 }

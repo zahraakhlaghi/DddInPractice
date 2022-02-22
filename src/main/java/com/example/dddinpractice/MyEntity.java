@@ -8,6 +8,7 @@ import java.util.Objects;
 public abstract class MyEntity {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long Id;
 
     public long getId() {
