@@ -44,7 +44,7 @@ public class SnackMachineTest {
     @Test
     public void BuySnackTradesInsertedMoneyForASnack() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 10, 1.0));
+        snackMachine.LoadSnack(1, new SnackPie(Snack.Chocolate, 10, 1.0));
         snackMachine.InsertMoney(Money.Dollar);
 
         snackMachine.BuySnack(1);
@@ -69,7 +69,7 @@ public class SnackMachineTest {
     public void CannotMakePurchaseIfNotEnoughMoneyInserted() {
 
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 2.0));
+        snackMachine.LoadSnack(1, new SnackPie(Snack.Chocolate, 1, 2.0));
         snackMachine.InsertMoney(Money.Dollar);
 
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -98,7 +98,7 @@ public class SnackMachineTest {
     @Test
     public void AfterPurchaseChangeIsReturned() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 0.5));
+        snackMachine.LoadSnack(1, new SnackPie(Snack.Chocolate, 1, 0.5));
         snackMachine.LoadMoney(Money.Multiply(Money.TenCent, 10));
 
         snackMachine.InsertMoney(Money.Dollar);
@@ -112,7 +112,7 @@ public class SnackMachineTest {
     @Test
     public void CannotBuySnackIfNotEnoughChange() {
         SnackMachine snackMachine = new SnackMachine();
-        snackMachine.LoadSnack(1, new SnackPie(new Snack("Some snack"), 1, 0.5));
+        snackMachine.LoadSnack(1, new SnackPie(Snack.Chocolate, 1, 0.5));
         snackMachine.InsertMoney(Money.Dollar);
 
         Assertions.assertThrows(IllegalArgumentException.class,

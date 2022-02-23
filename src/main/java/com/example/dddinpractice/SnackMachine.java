@@ -17,12 +17,11 @@ public class SnackMachine extends MyEntity {
             @AttributeOverride(name = "fiveDollarCount", column = @Column(name = "moneyInside_FiveDollarCount")),
             @AttributeOverride(name = "twentyDollarCount", column = @Column(name = "moneyInside_TwentyDollarCount"))
     })
-    private Money moneyInside = Money.None;
-    private Double moneyInTransaction = 0.0;
+    private Money moneyInside;
+    private Double moneyInTransaction;
 
     @OneToMany(mappedBy = "snackMachine", cascade = CascadeType.ALL)
-    private List<Slot> Slots = List.of(new Slot(this, 1), new Slot(this, 2), new Slot(this, 3), new Slot(this, 4));
-
+    private List<Slot> Slots;
 
     public Money getMoneyInside() {
         return moneyInside;
@@ -37,13 +36,13 @@ public class SnackMachine extends MyEntity {
     }
 
     public SnackMachine() {
-//        moneyInside = ;
-//        moneyInTransaction = 0.0;
-//        Slots = new ArrayList<>();
-//        Slots.add();
-//        Slots.add(new Slot(this, 2));
-//        Slots.add(new Slot(this, 3));
-//        Slots.add(new Slot(this, 4));
+        moneyInside = Money.None;
+        moneyInTransaction = 0.0;
+        Slots = new ArrayList<>();
+        Slots.add(new Slot(this, 1));
+        Slots.add(new Slot(this, 2));
+        Slots.add(new Slot(this, 3));
+        Slots.add(new Slot(this, 4));
     }
 
     public void InsertMoney(Money money) {
@@ -64,18 +63,26 @@ public class SnackMachine extends MyEntity {
         moneyInTransaction = 0.0;
     }
 
+    public String CanBuySnack(Integer position) {
+        SnackPie snackPie = GetSnackPie(position);
+
+        if (snackPie.quantity == 0)
+            return "The snack pile is empty";
+        if (moneyInTransaction < snackPie.price)
+            return "Not enough money";
+        if (moneyInside.CanAllocate(moneyInTransaction - snackPie.price))
+            return "Not enough change";
+        return null;
+    }
+
     public void BuySnack(Integer position) {
+
+        if (CanBuySnack(position) != null)
+            throw new IllegalArgumentException(CanBuySnack(position));
+
         Slot slot = GetSlot(position);
-        if (slot.getSnackPie().price > moneyInTransaction)
-            throw new IllegalArgumentException();
-
         slot.setSnackPie(slot.getSnackPie().SubtractOne());
-
         Money change = moneyInside.Allocate(getMoneyInTransaction() - slot.getSnackPie().price);
-
-        if (change.Amount() < (getMoneyInTransaction() - slot.getSnackPie().price))
-            throw new InvalidParameterException();
-
         moneyInside = Money.Subtract(moneyInside, change);
         moneyInTransaction = 0.0;
     }

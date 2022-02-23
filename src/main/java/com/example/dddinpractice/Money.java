@@ -1,6 +1,7 @@
 package com.example.dddinpractice;
 
 import javax.persistence.Embeddable;
+import java.security.InvalidParameterException;
 
 @Embeddable
 public class Money extends ValueObject<Money> {
@@ -107,7 +108,7 @@ public class Money extends ValueObject<Money> {
         return "$" + Amount().toString();
     }
 
-    public Money Allocate(Double amount) {
+    public Money AllocateCore(Double amount) {
 
         Integer twentyDollarCount = Math.min(this.twentyDollarCount, (amount.intValue() / 20));
         amount -= twentyDollarCount * 20;
@@ -135,4 +136,18 @@ public class Money extends ValueObject<Money> {
                 twentyDollarCount
         );
     }
+    public Money Allocate(Double amount){
+
+        if (!CanAllocate(amount))
+            throw new InvalidParameterException();
+
+        return AllocateCore(amount);
+    }
+
+    public Boolean CanAllocate(Double amount) {
+        Money money = Allocate(amount);
+        return money.Amount() == amount;
+    }
+
+
 }

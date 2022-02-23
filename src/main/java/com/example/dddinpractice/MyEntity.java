@@ -9,10 +9,11 @@ public abstract class MyEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long Id;
+    protected long id;
 
-    public long getId() {
-        return Id;
+
+    protected void setId(long id) {
+        this.id = id;
     }
 
     @Override
@@ -20,12 +21,12 @@ public abstract class MyEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MyEntity entity = (MyEntity) o;
-        return Id == entity.Id;
+        return id == entity.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 
     public static Boolean Equals(Entity a, Entity b) {

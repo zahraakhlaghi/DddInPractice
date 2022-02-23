@@ -29,7 +29,7 @@ public class Slot extends MyEntity {
     public Slot(SnackMachine snackMachine, Integer position) {
         this.snackMachine = snackMachine;
         this.position = position;
-        snackPie = new SnackPie(null, 0, 0.0);
+        snackPie = SnackPie.Empty;
     }
 
     public Slot() {

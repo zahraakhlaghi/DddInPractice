@@ -1,14 +1,13 @@
 package com.example.dddinpractice.Rest;
 
-import com.example.dddinpractice.Money;
-import com.example.dddinpractice.SnackMachine;
-import com.example.dddinpractice.SnackMachineRepository;
+import com.example.dddinpractice.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,10 +15,12 @@ import java.util.Optional;
 public class SnackMachineController {
 
     private SnackMachineRepository snackMachineRepository;
+    private SnackRepository snackRepository;
 
     @Autowired
-    public SnackMachineController(SnackMachineRepository snackMachineRepository) {
+    public SnackMachineController(SnackMachineRepository snackMachineRepository, SnackRepository snackRepository) {
         this.snackMachineRepository = snackMachineRepository;
+        this.snackRepository = snackRepository;
     }
 
     @PostMapping("/create")
@@ -65,5 +66,9 @@ public class SnackMachineController {
         return ResponseEntity.status(HttpStatus.OK).body("You have bought a snack.");
     }
 
-
+    @GetMapping("snacks")
+    public ResponseEntity<?> GetAllSnack() {
+        List<Snack> snacks = snackRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(snacks);
+    }
 }

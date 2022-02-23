@@ -7,6 +7,8 @@ import java.security.InvalidParameterException;
 @Embeddable
 public class SnackPie extends ValueObject<SnackPie> {
 
+    public static final SnackPie Empty = new SnackPie(Snack.None, 0, 0.0);
+
     @ManyToOne(fetch = FetchType.EAGER)
     protected Snack snack;
     protected Integer quantity;
