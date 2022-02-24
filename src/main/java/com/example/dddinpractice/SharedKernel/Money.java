@@ -1,4 +1,6 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.SharedKernel;
+
+import com.example.dddinpractice.Common.ValueObject;
 
 import javax.persistence.Embeddable;
 import java.security.InvalidParameterException;
@@ -81,7 +83,7 @@ public class Money extends ValueObject<Money> {
     }
 
     @Override
-    protected Boolean Equal(Money other) {
+    public Boolean Equal(Money other) {
         return this.oneCentCount.equals(other.oneCentCount)
                 && this.tenCentCount.equals(other.tenCentCount)
                 && this.quarterCount.equals(other.quarterCount)
@@ -91,7 +93,7 @@ public class Money extends ValueObject<Money> {
     }
 
     @Override
-    protected Integer GetHashCode() {
+    public Integer GetHashCode() {
         Integer hashCode = oneCentCount;
         hashCode = (hashCode * 397) ^ tenCentCount;
         hashCode = (hashCode * 397) ^ quarterCount;
@@ -145,9 +147,31 @@ public class Money extends ValueObject<Money> {
     }
 
     public Boolean CanAllocate(Double amount) {
-        Money money = Allocate(amount);
-        return money.Amount() == amount;
+        Money money = AllocateCore(amount);
+        return money.Amount().equals(amount);
     }
 
+    public Integer getOneCentCount() {
+        return oneCentCount;
+    }
 
+    public Integer getTenCentCount() {
+        return tenCentCount;
+    }
+
+    public Integer getQuarterCount() {
+        return quarterCount;
+    }
+
+    public Integer getOneDollarCount() {
+        return oneDollarCount;
+    }
+
+    public Integer getFiveDollarCount() {
+        return fiveDollarCount;
+    }
+
+    public Integer getTwentyDollarCount() {
+        return twentyDollarCount;
+    }
 }

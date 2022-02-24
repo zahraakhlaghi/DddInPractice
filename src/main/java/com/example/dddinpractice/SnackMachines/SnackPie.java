@@ -1,8 +1,8 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.SnackMachines;
+
+import com.example.dddinpractice.Common.ValueObject;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.security.InvalidParameterException;
 
 @Embeddable
 public class SnackPie extends ValueObject<SnackPie> {
@@ -51,5 +51,15 @@ public class SnackPie extends ValueObject<SnackPie> {
         return hashCode;
     }
 
+    public Snack getSnack() {
+        return snack;
+    }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
 }

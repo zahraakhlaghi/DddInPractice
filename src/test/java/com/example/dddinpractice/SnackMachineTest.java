@@ -1,5 +1,9 @@
 package com.example.dddinpractice;
 
+import com.example.dddinpractice.SharedKernel.Money;
+import com.example.dddinpractice.SnackMachines.Snack;
+import com.example.dddinpractice.SnackMachines.SnackMachine;
+import com.example.dddinpractice.SnackMachines.SnackPie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,7 +55,7 @@ public class SnackMachineTest {
 
         Assertions.assertEquals(snackMachine.getMoneyInTransaction(), 0.0);
         Assertions.assertEquals(snackMachine.getMoneyInside().Amount(), 1.0);
-        Assertions.assertEquals(snackMachine.GetSnackPie(1).quantity, 9);
+        Assertions.assertEquals(snackMachine.GetSnackPie(1).getQuantity(), 9);
     }
 
     @Test
@@ -91,8 +95,8 @@ public class SnackMachineTest {
         snackMachine.ReturnMoney();
 
 
-        Assertions.assertEquals(snackMachine.getMoneyInside().quarterCount, 4);
-        Assertions.assertEquals(snackMachine.getMoneyInside().oneDollarCount, 0);
+        Assertions.assertEquals(snackMachine.getMoneyInside().getQuarterCount(), 4);
+        Assertions.assertEquals(snackMachine.getMoneyInside().getOneDollarCount(), 0);
     }
 
     @Test

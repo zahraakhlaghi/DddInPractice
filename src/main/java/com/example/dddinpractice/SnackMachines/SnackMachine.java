@@ -1,7 +1,9 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.SnackMachines;
+
+import com.example.dddinpractice.Common.MyEntity;
+import com.example.dddinpractice.SharedKernel.Money;
 
 import javax.persistence.*;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public class SnackMachine extends MyEntity {
             return "The snack pile is empty";
         if (moneyInTransaction < snackPie.price)
             return "Not enough money";
-        if (moneyInside.CanAllocate(moneyInTransaction - snackPie.price))
+        if (!moneyInside.CanAllocate(moneyInTransaction - snackPie.price))
             return "Not enough change";
         return null;
     }

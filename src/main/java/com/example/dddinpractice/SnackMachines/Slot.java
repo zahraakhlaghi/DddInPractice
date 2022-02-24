@@ -1,4 +1,6 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.SnackMachines;
+
+import com.example.dddinpractice.Common.MyEntity;
 
 import javax.persistence.*;
 
@@ -18,11 +20,11 @@ public class Slot extends MyEntity {
     private SnackMachine snackMachine;
     private Integer position;
 
-    public com.example.dddinpractice.SnackPie getSnackPie() {
+    public SnackPie getSnackPie() {
         return snackPie;
     }
 
-    protected void setSnackPie(com.example.dddinpractice.SnackPie snackPie) {
+    protected void setSnackPie(SnackPie snackPie) {
         this.snackPie = snackPie;
     }
 
@@ -35,7 +37,7 @@ public class Slot extends MyEntity {
     public Slot() {
     }
 
-    public com.example.dddinpractice.SnackMachine getSnackMachine() {
+    public SnackMachine getSnackMachine() {
         return snackMachine;
     }
 
@@ -43,7 +45,7 @@ public class Slot extends MyEntity {
         return position;
     }
 
-    protected void setSnackMachine(com.example.dddinpractice.SnackMachine snackMachine) {
+    protected void setSnackMachine(SnackMachine snackMachine) {
         this.snackMachine = snackMachine;
     }
 

@@ -1,6 +1,10 @@
-package com.example.dddinpractice.Rest;
+package com.example.dddinpractice.SnackMachines.Rest;
 
-import com.example.dddinpractice.*;
+import com.example.dddinpractice.SharedKernel.Money;
+import com.example.dddinpractice.SnackMachines.Snack;
+import com.example.dddinpractice.SnackMachines.SnackMachine;
+import com.example.dddinpractice.SnackMachines.SnackMachineRepository;
+import com.example.dddinpractice.SnackMachines.SnackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/snackMachine")
 public class SnackMachineController {
 
     private SnackMachineRepository snackMachineRepository;

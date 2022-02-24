@@ -1,4 +1,6 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.SnackMachines;
+
+import com.example.dddinpractice.Common.MyEntity;
 
 import javax.persistence.*;
 import java.util.List;

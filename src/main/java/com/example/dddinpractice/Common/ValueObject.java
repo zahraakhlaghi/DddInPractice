@@ -1,4 +1,4 @@
-package com.example.dddinpractice;
+package com.example.dddinpractice.Common;
 
 public abstract class ValueObject<T> {
 

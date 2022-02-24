@@ -1,5 +1,6 @@
 package com.example.dddinpractice;
 
+import com.example.dddinpractice.SharedKernel.Money;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.jupiter.api.Assertions;
@@ -21,12 +22,12 @@ public class MoneyTest {
 
         Money sum = Money.Sum(money1, money2);
 
-        Assertions.assertEquals(sum.oneCentCount, 2);
-        Assertions.assertEquals(sum.tenCentCount, 4);
-        Assertions.assertEquals(sum.quarterCount, 6);
-        Assertions.assertEquals(sum.oneDollarCount, 8);
-        Assertions.assertEquals(sum.fiveDollarCount, 10);
-        Assertions.assertEquals(sum.twentyDollarCount, 12);
+        Assertions.assertEquals(sum.getOneCentCount(), 2);
+        Assertions.assertEquals(sum.getTenCentCount(), 4);
+        Assertions.assertEquals(sum.getQuarterCount(), 6);
+        Assertions.assertEquals(sum.getOneDollarCount(), 8);
+        Assertions.assertEquals(sum.getFiveDollarCount(), 10);
+        Assertions.assertEquals(sum.getTwentyDollarCount(), 12);
 
     }
 
@@ -112,12 +113,12 @@ public class MoneyTest {
 
         Money result = Money.Subtract(money1, money2);
 
-        Assertions.assertEquals(result.oneCentCount, 9);
-        Assertions.assertEquals(result.tenCentCount, 8);
-        Assertions.assertEquals(result.quarterCount, 7);
-        Assertions.assertEquals(result.oneDollarCount, 6);
-        Assertions.assertEquals(result.fiveDollarCount, 5);
-        Assertions.assertEquals(result.twentyDollarCount, 4);
+        Assertions.assertEquals(result.getOneCentCount(), 9);
+        Assertions.assertEquals(result.getTenCentCount(), 8);
+        Assertions.assertEquals(result.getQuarterCount(), 7);
+        Assertions.assertEquals(result.getOneDollarCount(), 6);
+        Assertions.assertEquals(result.getFiveDollarCount(), 5);
+        Assertions.assertEquals(result.getTwentyDollarCount(), 4);
 
 
     }
