@@ -1,11 +1,11 @@
 package com.example.dddinpractice.SnackMachines;
 
-import com.example.dddinpractice.Common.MyEntity;
+import com.example.dddinpractice.Common.BaseEntity;
 
 import javax.persistence.*;
 
 @Entity
-public class Slot extends MyEntity {
+public class Slot extends BaseEntity {
 
 
     @Embedded

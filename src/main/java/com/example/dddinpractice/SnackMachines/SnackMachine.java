@@ -1,6 +1,7 @@
 package com.example.dddinpractice.SnackMachines;
 
-import com.example.dddinpractice.Common.MyEntity;
+import com.example.dddinpractice.Common.BaseAggregationRoot;
+import com.example.dddinpractice.Common.BaseEntity;
 import com.example.dddinpractice.SharedKernel.Money;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class SnackMachine extends MyEntity {
+public class SnackMachine extends BaseAggregationRoot {
 
     @Embedded
     @AttributeOverrides({
@@ -107,5 +108,12 @@ public class SnackMachine extends MyEntity {
 
     public void LoadMoney(Money money) {
         moneyInside = Money.Sum(money, moneyInside);
+    }
+
+    public Money UnLoadMoney() {
+        Money unloadMoney = moneyInside;
+        moneyInside = Money.None;
+        return unloadMoney;
+
     }
 }

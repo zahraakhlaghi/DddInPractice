@@ -1,12 +1,12 @@
 package com.example.dddinpractice.SnackMachines;
 
-import com.example.dddinpractice.Common.MyEntity;
+import com.example.dddinpractice.Common.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Snack extends MyEntity {
+public class Snack extends BaseEntity {
 
     public static final Snack None = new Snack(1, "None");
     public static final Snack Chocolate = new Snack(1, "Chocolate");

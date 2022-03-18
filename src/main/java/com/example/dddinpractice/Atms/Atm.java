@@ -1,12 +1,12 @@
 package com.example.dddinpractice.Atms;
 
-import com.example.dddinpractice.Common.MyEntity;
+import com.example.dddinpractice.Common.BaseAggregationRoot;
 import com.example.dddinpractice.SharedKernel.Money;
 
 import javax.persistence.Entity;
 
 @Entity
-public class Atm extends MyEntity {
+public class Atm extends BaseAggregationRoot {
 
     private static final Double CommissionRate = 0.01;
 

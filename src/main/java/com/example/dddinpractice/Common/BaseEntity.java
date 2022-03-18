@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 @MappedSuperclass
-public abstract class MyEntity {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -20,7 +20,7 @@ public abstract class MyEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyEntity entity = (MyEntity) o;
+        BaseEntity entity = (BaseEntity) o;
         return id == entity.id;
     }
 
